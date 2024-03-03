@@ -67,10 +67,12 @@ myChain.addBlock(new Block(3, new Date().toLocaleDateString(), { amount: 2 }));
 //show the nicely formatted blockchain
 // console.log(JSON.stringify(myChain, null, myChain.chain.length));
 
-// console.log(myChain.isChainValid())
+console.log(myChain.isChainValid());
 
 //attempt to alter the existing blockchain & fail
-// myChain.chain[0].data = { amount: 100 };
-// myChain.chain[0].hash = myChain.chain[0].calculateHash();
-// myChain.chain[1].prevHash = myChain.chain[0].hash;
+// myChain.chain[1].data = { amount: 100 };
+// myChain.chain[1].hash = myChain.chain[1].calculateHash();
+// console.log(myChain.chain[1].hash);
+// myChain.chain[2].prevHash = myChain.chain[1].hash;
 // console.log(myChain.isChainValid());
+// myChain.chain[2].prevHash;
