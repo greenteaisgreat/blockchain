@@ -79,6 +79,24 @@ class Blockchain {
     this.pendingTransactions.push(newTransaction);
   }
 
+  getBalanceOfAddress(address) {
+    let balance = 0;
+
+    this.chain.forEach((block) => {
+      block.transactions.forEach((transaction) => {
+        if (transaction.fromAddress === address) {
+          balance -= transaction.amount;
+        }
+
+        if (transaction.toAddress === address) {
+          balance += transaction.amount;
+        }
+      });
+    });
+
+    return balance;
+  }
+
   isChainValid() {
     for (let i = 1; i < this.chain.length; i++) {
       const currentBlock = this.chain[i];
@@ -87,8 +105,10 @@ class Blockchain {
       if (currentBlock.hash !== currentBlock.calculateHash()) return false;
       if (currentBlock.prevHash !== prevBlock.hash) return false;
     }
+
     return true;
   }
 }
 
 const myChain = new Blockchain();
+myChain.addBlock(new Block(Date.now));
