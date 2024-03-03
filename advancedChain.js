@@ -61,7 +61,7 @@ class Blockchain {
   }
 
   minePendingTransactions(miningRewardAddress) {
-    let block = new Block(Date.now(), this.transactions);
+    let block = new Block(Date.now(), this.pendingTransactions);
     let minerReward = new Transaction(
       null,
       miningRewardAddress,
@@ -82,17 +82,17 @@ class Blockchain {
   getBalanceOfAddress(address) {
     let balance = 0;
 
-    this.chain.forEach((block) => {
-      block.transactions.forEach((transaction) => {
-        if (transaction.fromAddress === address) {
-          balance -= transaction.amount;
+    for (const block of this.chain) {
+      for (const trans of block.transactions) {
+        if (trans.fromAddress === address) {
+          balance -= trans.amount;
         }
 
-        if (transaction.toAddress === address) {
-          balance += transaction.amount;
+        if (trans.toAddress === address) {
+          balance += trans.amount;
         }
-      });
-    });
+      }
+    }
 
     return balance;
   }
@@ -111,4 +111,26 @@ class Blockchain {
 }
 
 const myChain = new Blockchain();
-myChain.addBlock(new Block(Date.now));
+
+myChain.createTransaction(new Transaction("myAddress", "yourAddress", 100));
+myChain.createTransaction(new Transaction("yourAddress", "myAddress", 50));
+
+console.log("Starting Miner...");
+myChain.minePendingTransactions("minerAddress");
+
+//Miner's balance is initially 0 after the first transaction, due to the miner's
+//reward being place in the pendingTransactions array
+console.log(
+  `Miner's balance is ${myChain.getBalanceOfAddress("minerAddress")}`
+);
+
+console.log(`My balance is ${myChain.getBalanceOfAddress("myAddress")}`);
+
+console.log(`Your balance is ${myChain.getBalanceOfAddress("yourAddress")}`);
+
+//running this method again will deliver the miner's reward
+myChain.minePendingTransactions("minerAddress");
+
+console.log(
+  `Miner's balance is ${myChain.getBalanceOfAddress("minerAddress")}`
+);
