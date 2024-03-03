@@ -76,7 +76,7 @@ class Blockchain {
   }
 
   createTransaction(newTransaction) {
-    this.transactions.push(newTransaction);
+    this.pendingTransactions.push(newTransaction);
   }
 
   isChainValid() {
