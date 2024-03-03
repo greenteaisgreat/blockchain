@@ -31,7 +31,7 @@ class Block {
   //required to 'mine' a block, based on finding the correct # of 0's prepending a block's hash
   mineBlock(difficulty) {
     while (
-      this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")
+      this.hash.substring(0, difficulty) !== Array(difficulty + 1).join(0)
     ) {
       this.hash = this.calculateHash();
       this.nonce++;
@@ -45,7 +45,7 @@ class Blockchain {
   //needs to be added manually
   constructor() {
     this.chain = [this.createGenesis()];
-    this.difficulty = 5;
+    this.difficulty = 2;
   }
 
   createGenesis() {
